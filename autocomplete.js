@@ -9,8 +9,7 @@ function Script(url) {
             }
         };
         document.body.appendChild(script);
-
-        console.log('loaded url: ' + url);
+        console.log('loaded script [' + url + ']');
     };
 }
 
@@ -34,49 +33,70 @@ function JQuery() {
 
 function Input(referenceName) {
     this.setValueTo = function(value) {
-        $(referenceName).val(value);
+        var element = $(referenceName);
+        if(element.length === 0) {
+            console.log('could not find [' + referenceName + ']');
+            return;
+        }
+        element.val(value);
         console.log('set [' + referenceName + '] to [' + value + ']');
     };
 }
 
 function Button(referenceName) {
     this.click = function() {
-        $(referenceName).click();
+        var element = $(referenceName);
+        if(element.length === 0) {
+            console.log('could not find [' + referenceName + ']');
+            return;
+        }
+        element.click();
         console.log('clicked [' + referenceName + ']');
     };
 }
 
-var pages = [{
-    name: 'page1',
-    inputs: [{
-        name: "first-input",
-        referenceName: '#first-text-input',
-        value: 'whatever1'
-    }, {
-        name: "second-input",
-        referenceName: '#second-text-input',
-        value: 'whatever2'
-    }, {
-        name: "first-button",
-        referenceName: '#first-button',
-        type: 'button'
-    }]
-}, {
-    name: 'page2',
-    inputs: [{
-        name: "first-input",
-        referenceName: '#first-text-input',
-        value: 'whatever1'
-    }, {
-        name: "third-input",
-        referenceName: '#third-text-input',
-        value: 'whatever3'
-    }, {
-        name: "first-button",
-        referenceName: '#first-button',
-        type: 'button'
-    }]
-}];
+var pages = [
+    {
+        name: 'page1',
+        inputs: [
+        {
+            name: "first-input",
+            referenceName: '#first-text-input',
+            value: 'whatever1'
+        }, 
+        {
+            name: "second-input",
+            referenceName: '#second-text-input',
+            value: 'whatever2'
+        }, 
+        {
+            name: "fake-input",
+            referenceName: '#fake-text-input',
+            value: 'faaake'
+        },
+        {
+            name: "first-button",
+            referenceName: '#first-button',
+            type: 'button'
+        }]
+    }, 
+    {
+        name: 'page2',
+        inputs: [
+            {
+            name: "first-input",
+            referenceName: '#first-text-input',
+            value: 'whatever1'
+        }, {
+            name: "third-input",
+            referenceName: '#third-text-input',
+            value: 'whatever3'
+        }, {
+            name: "first-button",
+            referenceName: '#first-button',
+            type: 'button'
+        }]
+    }];
 
 function Page(name) {
     function fill(inputs) {
@@ -109,8 +129,7 @@ function Page(name) {
 }
 
 function autocomplete(pageName) {
+    console.log('autocompleting page [' + pageName + '] ');
     new JQuery().whenLoadedRun(new Page(pageName).autocomplete);
 }
 
-// var pageName must be already set
-autocomplete(pageName);
